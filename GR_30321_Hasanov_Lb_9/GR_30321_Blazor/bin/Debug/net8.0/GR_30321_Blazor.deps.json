@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "GR_30321_Blazor/1.0.0": {
+        "dependencies": {
+          "GR_30321_Hasanov_Lb_3_Domain": "1.0.0"
+        },
+        "runtime": {
+          "GR_30321_Blazor.dll": {}
+        }
+      },
+      "GR_30321_Hasanov_Lb_3_Domain/1.0.0": {
+        "runtime": {
+          "GR_30321_Hasanov_Lb_3_Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GR_30321_Blazor/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GR_30321_Hasanov_Lb_3_Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

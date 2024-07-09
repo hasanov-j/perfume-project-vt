@@ -1,0 +1,49 @@
+﻿@implements IDisposable
+@rendermode InteractiveServer
+
+<h3>Летуаль</h3>
+
+<table class="table table-striped">
+	<thead>
+		<th>Название</th>
+		<th></th>
+		@if (
+			ApiPerfumeService.Perfumes != null && 
+			ApiPerfumeService.Perfumes.Count() != 0
+		) {
+			foreach (var perfume in ApiPerfumeService.Perfumes)
+			{
+				<tr>
+					<td>@perfume.Name</td>
+					<td>
+					<button class="btn btn-outline-dark" @onclick="@(() => 
+						OnPerfumeSelected(perfume.Id)
+					)">Подробно</button>
+					</td>
+				</tr>
+			}
+		}
+	</thead>
+</table>
+
+
+@code {
+	[CascadingParameter]
+	public IPerfumeService<Perfume> ApiPerfumeService { get; set; }
+
+	[Parameter]
+	public EventCallback<int> PerfumeSelected { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		ApiPerfumeService.ListChanged += StateHasChanged;
+	}
+	public async void OnPerfumeSelected(int id)
+	{
+		await PerfumeSelected.InvokeAsync(id);
+	}
+	public void Dispose()
+	{
+		ApiPerfumeService.ListChanged -= StateHasChanged;
+	}
+}

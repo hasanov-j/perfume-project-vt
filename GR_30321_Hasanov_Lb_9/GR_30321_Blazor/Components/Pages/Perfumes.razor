@@ -1,0 +1,32 @@
+﻿@page "/perfumes"
+@rendermode InteractiveServer
+
+<CascadingValue Value="ApiPerfumeService">
+	<PerfumesList PerfumeSelected="ShowDetails"/>
+	<Pager/>
+</CascadingValue>
+
+<PerfumeDetails Perfume="SelectedPerfume" />
+
+
+<pager admin="true"
+	   current-page="@ApiPerfumeService.CurrentPage"
+	   total-pages="@ApiPerfumeService.TotalPages
+"></pager>
+
+@code {
+	[Inject] IPerfumeService<Perfume> ApiPerfumeService { get; set; }
+
+	[Parameter]
+	public Perfume SelectedPerfume { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		await ApiPerfumeService.GetPerfumes();
+	}
+
+	void ShowDetails(int id)
+	{
+		SelectedPerfume = ApiPerfumeService.Perfumes.First(p => p.Id == id);
+	}
+}

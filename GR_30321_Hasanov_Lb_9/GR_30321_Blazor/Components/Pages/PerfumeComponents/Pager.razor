@@ -1,0 +1,64 @@
+﻿@implements IDisposable
+@rendermode InteractiveServer
+
+<div class="btn-group" role="group" aria-label="Pager">
+	<!-- Кнопка Previous -->
+	<button type="button" 
+		class="btn btn-outline-primary @(previousEnabled?"":"disabled")"
+		@onclick="@(e => OnPageSelected(ApiPerfumeService.CurrentPage-1))"
+	>
+		<span aria-hidden="true">&laquo;</span>
+	</button>
+
+	@for (int i = 1; i <= ApiPerfumeService.TotalPages; i++)
+	{
+		var temp = i;
+		<button 
+			type="button" 
+			class="btn btn-outline-primary @(IsActive(temp)?"active":"")"
+			@onclick="@(e => OnPageSelected(temp))">
+			@temp
+		</button>
+	}
+
+	<!-- Кнопка Next -->
+	<button 
+		type="button" 
+		class="btn btn-outline-primary @(nextEnabled?"":"disabled")"
+		@onclick="@(e => OnPageSelected(ApiPerfumeService.CurrentPage+1))">
+		<span aria-hidden="true">&raquo;</span>
+	</button>
+</div>
+
+@code {
+	[CascadingParameter]
+	public IPerfumeService<Perfume> ApiPerfumeService { get; set; }
+
+	protected override void OnInitialized()
+	{
+		ApiPerfumeService.ListChanged += StateHasChanged;
+	}
+
+	// Кнопка Previous доступна?
+	bool previousEnabled { get => ApiPerfumeService.CurrentPage != 1; }
+
+	// Кнопка Next доступна
+	bool nextEnabled
+	{
+		get => ApiPerfumeService.CurrentPage != ApiPerfumeService.TotalPages;
+	}
+
+	// Это текущая страница?
+	bool IsActive(int pageNo) => pageNo == ApiPerfumeService.CurrentPage;
+
+	// Обработчик клика кнопки
+	async void OnPageSelected(int pageNo)
+	{
+		await ApiPerfumeService.GetPerfumes(pageNo);
+	}
+
+	public void Dispose()
+	{
+		ApiPerfumeService.ListChanged -= StateHasChanged;
+	}
+}

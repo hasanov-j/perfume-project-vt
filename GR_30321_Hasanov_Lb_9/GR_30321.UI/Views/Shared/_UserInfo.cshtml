@@ -1,0 +1,75 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @await Component.InvokeAsync("Cart");
+
+    <div class="dropdown ms-4 nav-color">
+        <button 
+            class="btn btn-secondary dropdown-toggle"
+            type="button" id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+        >
+            <img img-controller="Image"
+                img-action="GetAvatar" 
+                width="30"
+                alt="User" 
+                class="rounded nav-color" 
+            />
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+                <span class="dropdown-item-text">
+                    <img img-controller="Image"
+                         img-action="GetAvatar"
+                         width="50" 
+                         alt="User" 
+                         class="rounded" 
+                     />
+
+                    @User.Identity?.Name!
+
+                </span>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <form 
+                    id="logoutForm" 
+                    class="form-inline" 
+                    asp-area="Identity" 
+                    asp-page="/Account/Logout" 
+                    asp-route-returnurl="/"
+                >
+                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+} else {
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item nav-link">
+            <a 
+                asp-area="Identity"
+                asp-page="/Account/Login"
+            >
+                Login
+            </a>
+        </li>
+
+        <li class="nav-item nav-link">
+            <a 
+                asp-area="Identity"
+                asp-page="/Account/Register"
+            >
+                Sign in
+            </a>
+        </li>
+    </ul>
+}
+
+
